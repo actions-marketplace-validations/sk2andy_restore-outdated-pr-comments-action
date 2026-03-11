@@ -1,0 +1,55 @@
+name: Restore Outdated PR Comments
+description: Recreate outdated pull request review threads on the current diff and preserve replies.
+author: Andre Naumann
+branding:
+  icon: message-square
+  color: blue
+
+inputs:
+  github-token:
+    description: GitHub token with permission to write pull request comments.
+    required: true
+  wait-seconds:
+    description: Seconds to wait before scanning outdated review threads.
+    required: false
+    default: '15'
+  repository:
+    description: Optional owner/repo override. Defaults to GITHUB_REPOSITORY.
+    required: false
+  pull-request-number:
+    description: Optional pull request number override. Defaults to the current pull request event.
+    required: false
+  locale:
+    description: Locale used when rendering the original comment timestamp.
+    required: false
+    default: en-US
+  time-zone:
+    description: Time zone used when rendering the original comment timestamp.
+    required: false
+    default: UTC
+  include-diff-context:
+    description: Whether to include the original diff hunk in the restored root comment when available.
+    required: false
+    default: 'true'
+
+runs:
+  using: composite
+  steps:
+    - name: Setup Node
+      uses: actions/setup-node@v6
+      with:
+        node-version: '22.x'
+
+    - name: Restore outdated pull request comments
+      shell: bash
+      env:
+        GITHUB_TOKEN: ${{ inputs.github-token }}
+        INPUT_INCLUDE_DIFF_CONTEXT: ${{ inputs.include-diff-context }}
+        INPUT_LOCALE: ${{ inputs.locale }}
+        INPUT_PULL_REQUEST_NUMBER: ${{ inputs.pull-request-number }}
+        INPUT_REPOSITORY: ${{ inputs.repository }}
+        INPUT_TIME_ZONE: ${{ inputs.time-zone }}
+        INPUT_WAIT_SECONDS: ${{ inputs.wait-seconds }}
+      run: |
+        sleep "${INPUT_WAIT_SECONDS}"
+        node "$GITHUB_ACTION_PATH/src/index.mjs"
