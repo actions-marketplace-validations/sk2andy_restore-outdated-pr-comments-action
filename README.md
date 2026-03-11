@@ -16,6 +16,11 @@ When a pull request author changes a previously reviewed line, GitHub marks the 
 - It cannot embed GitHub's native historical inline diff UI inside a comment.
 - If a thread can no longer be cleanly anchored to the current diff, it leaves that thread untouched and outdated.
 
+## How it looks like
+Ignore the German - it's all english now
+<img width="1896" height="1221" alt="image" src="https://github.com/user-attachments/assets/9bc9d2cd-bd6c-4b51-ae8a-e20b27d17669" />
+
+
 ## Usage
 
 Add the action to a workflow that runs after PR updates:
