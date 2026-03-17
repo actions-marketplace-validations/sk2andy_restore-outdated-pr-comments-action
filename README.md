@@ -2,7 +2,7 @@
 
 Recreate outdated pull request review threads on the current diff and keep the reply structure intact.
 
-When a pull request author changes a previously reviewed line, GitHub marks the original review thread as outdated. This action scans those outdated threads after each PR update, tries to re-anchor them on the current diff, recreates the root comment plus replies, and deletes the old outdated thread only after the full recreation succeeds.
+When a pull request author changes a previously reviewed line, GitHub marks the original review thread as outdated. This action scans unresolved outdated threads after each PR update, tries to re-anchor them on the current diff, recreates the root comment plus replies, and deletes the old outdated thread only after the full recreation succeeds.
 
 ## What it preserves
 
