@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 
 import {
+  filterRestorableThreads,
   extractDiffPositions,
   extractVisibleDiffLines,
   resolveRuntimeContext,
@@ -123,6 +124,19 @@ test('resolveThreadAnchor uses the current filename when the file was renamed', 
     path: 'src/new-name.ts',
     position: 7
   });
+});
+
+test('filterRestorableThreads keeps only outdated unresolved review threads', () => {
+  const threads = [
+    { id: 'outdated-unresolved', isOutdated: true, isResolved: false },
+    { id: 'outdated-resolved', isOutdated: true, isResolved: true },
+    { id: 'current-unresolved', isOutdated: false, isResolved: false },
+    { id: 'current-resolved', isOutdated: false, isResolved: true }
+  ];
+
+  assert.deepEqual(filterRestorableThreads(threads), [
+    { id: 'outdated-unresolved', isOutdated: true, isResolved: false }
+  ]);
 });
 
 test('wrapRestoredBody preserves raw content and unwrapRestoredBody removes the visible metadata block', () => {

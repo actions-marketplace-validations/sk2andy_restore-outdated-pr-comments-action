@@ -417,6 +417,7 @@ const REVIEW_THREADS_QUERY = `
           nodes {
             id
             isOutdated
+            isResolved
             path
             line
             originalLine
@@ -700,6 +701,10 @@ function buildSummaryLines(summary) {
   ];
 }
 
+export function filterRestorableThreads(reviewThreads) {
+  return reviewThreads.filter((thread) => thread.isOutdated && !thread.isResolved);
+}
+
 async function writeStepSummary(summary) {
   const stepSummaryPath = process.env.GITHUB_STEP_SUMMARY;
   if (!stepSummaryPath) {
@@ -729,7 +734,7 @@ export async function main() {
   }
 
   const reviewThreads = await fetchAllReviewThreads(runtime);
-  const outdatedThreads = reviewThreads.filter((thread) => thread.isOutdated);
+  const outdatedThreads = filterRestorableThreads(reviewThreads);
 
   const summary = {
     scannedThreads: outdatedThreads.length,
